@@ -6,7 +6,8 @@ module.exports = function (config, logger) {
         port: config.port,
         database: config.db,
         user: config.user,
-        password: config.password
+        password: config.password,
+        multipleStatements: config.multipleStatements
     });
 
     function exec(query, values) {

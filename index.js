@@ -29,42 +29,46 @@ function rollback(config, adapter) {
     });
 }
 
+function run(config) {
+    config.adapter = config.adapter || 'pg';
+
+    var Adapter = require('./adapters/' + config.adapter);
+    var adapter = Adapter(config, LOGGER);
+
+    var args = process.argv.slice(2);
+
+    console.log(args)
+
+    switch (args[0]) {
+        case 'create':
+            createMigrationCommand(config, LOGGER, args[1]);
+            break;
+        case 'migrate':
+            migrate(config, adapter).then(onCliSuccess, onCliError);
+            break;
+        case 'rollback':
+            rollback(config, adapter).then(onCliSuccess, onCliError);
+            break;
+        default:
+            LOGGER.log('exit');
+    }
+
+    function onCliSuccess() {
+        LOGGER.log('done');
+        process.exit();
+    }
+
+    function onCliError(error) {
+        LOGGER.error('ERROR:', error);
+        process.exit(1);
+    }
+}
+
 module.exports = {
     setLogger: function (logger) {
         LOGGER = logger;
     },
     migrate: migrate,
     rollback: rollback,
-    run: function (config) {
-        config.adapter = config.adapter || 'pg';
-
-        var Adapter = require('./adapters/' + config.adapter);
-        var adapter = Adapter(config, LOGGER);
-
-        var args = process.argv.slice(2);
-
-        switch (args[0]) {
-            case 'create':
-                createMigrationCommand(config, LOGGER, args[1]);
-                break;
-            case 'migrate':
-                migrate(config, adapter).then(onCliSuccess, onCliError);
-                break;
-            case 'rollback':
-                rollback(config, adapter).then(onCliSuccess, onCliError);
-                break;
-            default:
-                LOGGER.log('exit');
-        }
-
-        function onCliSuccess() {
-            LOGGER.log('done');
-            process.exit();
-        }
-
-        function onCliError(error) {
-            LOGGER.error('ERROR:', error);
-            process.exit(1);
-        }
-    }
+    run: run
 };

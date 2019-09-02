@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "migrate:mysql": "node ./migrate-mysql.js migrate",
-    "migrate:pg": "node ./migrate.js migrate"
+    "mysql:test": "mocha ./test/mysql.spec.js",
+    "mysql:migrate": "node ./migrate-mysql.js migrate",
+    "mysql:migration": "node ./migrate-mysql.js",
+    "pg:test": "mocha ./test/postgres.spec.js",
+    "pg:migrate": "node ./migrate-pg.js migrate",
+    "pg:migration": "node ./migrate-pg.js"
   },
   "keywords": [
     "node",

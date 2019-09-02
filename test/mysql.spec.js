@@ -14,12 +14,11 @@ describe('Mysql', () => {
       await migrate(config, mysql)
     })
 
-    it('should have 4 lines on database', async () => {
+    it('should have 6 lines on database', async () => {
       const bd = adapter(config, LOGGER)
       const migrations = await bd.appliedMigrations()
-      expect(migrations.length).to.be.equals(4)
+      expect(migrations.length).to.be.equals(6)
     })
 
   })
-
 })
