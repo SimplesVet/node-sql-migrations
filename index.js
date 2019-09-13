@@ -1,5 +1,6 @@
 var MigrationProvider = require('./migration-provider');
 var createMigrationCommand = require('./commands/create-migration-command');
+var createCommitMigrationCommand = require('./commands/create-commit-migration-command');
 var runMigrationsCommand = require('./commands/run-migrations-command');
 var rollbackMigrationCommand = require('./commands/rollback-migration-command');
 
@@ -42,6 +43,9 @@ function run(config) {
     switch (args[0]) {
         case 'create':
             createMigrationCommand(config, LOGGER, args[1]);
+            break;
+        case 'commit-create':
+            createCommitMigrationCommand(config, LOGGER, args[1]);
             break;
         case 'migrate':
             migrate(config, adapter).then(onCliSuccess, onCliError);
